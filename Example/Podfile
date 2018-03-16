@@ -1,0 +1,14 @@
+use_frameworks!
+
+target 'QXTheme_Example' do
+  pod 'QXTheme', :path => '../'
+
+  target 'QXTheme_Tests' do
+    inherit! :search_paths
+
+    pod 'Specta'
+    pod 'Expecta'
+    pod 'FBSnapshotTestCase'
+    pod 'Expecta+Snapshots'
+  end
+end
