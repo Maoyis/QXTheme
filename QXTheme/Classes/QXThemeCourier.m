@@ -29,7 +29,8 @@
     NSAssert([target respondsToSelector:sel], @"%@不存在该方法%@", [target class], selName);
     //判断该方法参数个数是否对应（要求nil必须传空）
     NSInteger count = [selName length] - [[selName stringByReplacingOccurrencesOfString:@":" withString:@""] length];
-    NSAssert(args.count==count, @"参数数量不匹配，要求数量：%ld,实际数量：%ld", count, args.count);
+    BOOL flag = args.count==count;
+    NSAssert(flag, @"参数数量不匹配，要求数量：%ld,实际数量：%ld", count, args.count);
 }
 /**
  主题变更实际执行方法

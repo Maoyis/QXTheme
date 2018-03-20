@@ -48,7 +48,10 @@
             blue  = [self colorComponentFrom:colorString start: 6 length: 2];
             break;
         default:
-            alpha = 0, red = 0, blue = 0, green = 0;
+            alpha = 0.f;
+            red = 0.f;
+            blue = 0.f;
+            green = 0.f;
             break;
     }
     UIColor *color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
