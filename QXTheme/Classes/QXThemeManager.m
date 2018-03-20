@@ -10,6 +10,7 @@
 
 
 
+
 @interface QXThemeManager ()
 
 
@@ -37,6 +38,13 @@
     return _map;
 }
 
+- (void)setCurTheme:(QXTheme *)curTheme{
+    _curTheme = curTheme;
+    NSError *error;
+    if (![curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"defaultTheme" error:&error]) {
+        NSLog(@"本地记录失败/n%@", error.localizedDescription);
+    }
+}
 
 #pragma mark===========   API  ===============
 
@@ -66,14 +74,34 @@
     [[self shareManager] setCurTheme:theme];
 }
 
+
+/**
+ 通过文件名配置初始主题
+ 
+ @param fileName 文件全名（包括后缀）
+ @param isPriorityDefault 是否优先以上一次主题初始默认主题
+ */
++ (void)initDefaultThemeWithFileName:(NSString *)fileName isPriorityDefault:(BOOL)isPriorityDefault{
+    QXTheme *theme;
+    if (isPriorityDefault) {
+        NSString *defaultPath = [DEFAULT_THEME_PATH stringByAppendingPathComponent:@"defaultTheme.json"];
+        QXTheme *defaultTheme = [[QXTheme alloc] initWithFilePath:defaultPath];
+        if (defaultTheme && defaultTheme.name) {
+            theme = defaultTheme;
+        }else{
+            theme = [[QXTheme alloc] initWithFileName:fileName];
+        }
+    }
+    [self initDefaultTheme:theme];
+}
+
 /**
  通过文件名配置初始主题
  
  @param fileName 文件全名（包括后缀）
  */
 + (void)initDefaultThemeWithFileName:(NSString *)fileName{
-    QXTheme *theme = [[QXTheme alloc] initWithFileName:fileName];
-    [self initDefaultTheme:theme];
+    [self initDefaultThemeWithFileName:fileName isPriorityDefault:NO];
 }
 
 
@@ -92,7 +120,7 @@
 }
 
 /**
- 修改当前主题
+ 修改当前主题(不会修改文件内容，临时生效)
  */
 + (void)changeThemeWithTag:(NSString *)tag
                      value:(id)value
@@ -100,6 +128,15 @@
     [[[self shareManager] curTheme] changeThemeWithTag:tag value:value tagType:type];
     [self refreshTheme];
 }
+
+/**
+ 保存当前修改（只会替换默认文件，不修改原文件）
+ */
++ (void)saveChange{
+    QXThemeManager *m = [self shareManager];
+    [m setCurTheme:m.curTheme];
+}
+
 
 + (void)refreshTheme{
     QXThemeManager *m = [self shareManager];

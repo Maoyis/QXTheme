@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 
-
+#define DEFAULT_THEME_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"ThemeFile"]
 
 
 @interface UIColor (QXColorString)
@@ -37,6 +37,11 @@ typedef NS_ENUM(NSInteger, QXThemeTagType) {
     QXThemeTagTypeOfOther,
 };
 
+typedef NS_ENUM(NSInteger, QXThemeFileType) {
+    QXThemeFileTypeJson,
+    QXThemeFileTypePlist,
+};
+
 
 @interface QXTheme : NSObject
 
@@ -50,7 +55,13 @@ typedef NS_ENUM(NSInteger, QXThemeTagType) {
 
 
 
+/**
+ 通过文件路径初始一个主题
 
+ @param path 文件路径
+ @return 主题实例
+ */
+- (instancetype)initWithFilePath:(NSString *)path;
 /**
  通过文件名初始一个主题
 
@@ -68,9 +79,42 @@ typedef NS_ENUM(NSInteger, QXThemeTagType) {
                    tagType:(QXThemeTagType)type;
 
 
+#pragma mark=========== 文件操作 ===============
+
+
+/**
+ 导出当前主题为相应类型文件
+ 
+ @param type 导出文件类型
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type error:(NSError **)error;
+/**
+ 导出当前主题为相应类型文件
+ 
+ @param type  导出文件类型
+ @param name  新文件名
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type name:(NSString *)name error:(NSError **)error;
+/**
+ 导出主题文件
+ 
+ @param type 导出文件类型（默认为Json）
+ @param name 导出文件的新名字
+ @param path 导出文件存储目录
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type name:(NSString *)name path:(NSString *)path error:(NSError **)error;
 
 
 
+
+
+#pragma mark=========== 属性匹配 ===============
 - (UIColor *)getColorWithTag:(NSString *)tag;
 
 - (UIImage *)getImgWithTag:(NSString *)tag;

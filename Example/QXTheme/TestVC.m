@@ -101,6 +101,11 @@ static NSString *identy = @"QXTheme";
     UIColor *color = cell.backgroundColor;
     NSString *hexStr = [UIColor qx_hexStringWithColor:color];
     [QXThemeManager changeThemeWithTag:@"themeColor" value:hexStr tagType:QXThemeTagTypeOfColor];
+    [QXThemeManager saveChange];
+    NSError *error;
+    if (![[QXThemeManager shareManager].curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"Theme_color" path:@"/Users/lqx/Desktop/QXTheme" error:&error]) {
+        NSLog(@"导出失败Error:%@", error.localizedDescription);
+    }
 }
 
 

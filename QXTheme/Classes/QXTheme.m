@@ -121,6 +121,12 @@
 
 
 #pragma mark===========  初始化 ===============
+- (instancetype)initWithFilePath:(NSString *)path{
+    NSArray *temp = [path componentsSeparatedByString:@"/"];
+    NSString *filename = temp.lastObject;
+    return [self initWithFileName:filename];
+}
+
 - (instancetype)initWithFileName:(NSString *)filename{
     NSArray *info = [filename componentsSeparatedByString:@"."];
     if (info.count>1) {
@@ -138,6 +144,7 @@
 
 - (instancetype)initWithJsonfile:(NSString *)filename{
     NSString *path = [[NSBundle mainBundle] pathForResource:filename ofType:@"json"];
+    path = path ?:  [DEFAULT_THEME_PATH stringByAppendingFormat:@"/%@.json", filename];
     if (!path) {
         return self;
     }
@@ -151,6 +158,7 @@
 
 - (instancetype)initWithPlistfile:(NSString *)filename{
     NSString *path = [[NSBundle mainBundle] pathForResource:filename ofType:@"plist"];
+   path = path ?:  [DEFAULT_THEME_PATH stringByAppendingFormat:@"/%@.plist", filename];
     if (!path) {
         return self;
     }
@@ -252,9 +260,126 @@
         }
     }
 }
+#pragma mark=========== 文件操作 ===============
+
+/**
+ 导出当前主题为相应类型文件
+
+ @param type 导出文件类型
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type error:(NSError **)error{
+    return [self exportThemeFileWithFileType:type name:nil path:nil error:error];
+}
+
+/**
+ 导出当前主题为相应类型文件
+ 
+ @param type  导出文件类型
+ @param name  新文件名
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type name:(NSString *)name error:(NSError **)error{
+    return [self exportThemeFileWithFileType:type name:name path:nil error:error];
+}
+/**
+ 导出主题文件
+
+ @param type 导出文件类型（默认为Json）
+ @param name 导出文件的新名字
+ @param path 导出文件存储目录
+ @param error 错误指针
+ return 是否成功导出文件，YES：成功
+ */
+- (BOOL)exportThemeFileWithFileType:(QXThemeFileType)type name:(NSString *)name path:(NSString *)path error:(NSError **)error{
+    if (!path) {
+        //默认存储在document目录下
+        path = DEFAULT_THEME_PATH;
+    }
+    NSFileManager *m = [NSFileManager defaultManager];
+    BOOL pathType;
+    if (![m fileExistsAtPath:path isDirectory:&pathType]) {//判断路径是否存在
+        //不存在，创建目录
+        BOOL createSuccess = [m  createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:error];
+        if (!createSuccess) {//创建失败返回
+            return NO;
+        }
+    }else{
+        if (!pathType) {//不是文件夹
+            *error = [self createErrorWithDes:@"Path不是一个有效的文件夹路径" code:-1001];
+            return NO;
+        }
+    }
+    
+    if (!name) {
+        //默认为当前主题名
+        name = self.name;
+    }
+    //默认数据格式
+    NSDictionary *data = @{@"fontName"  :  self.defaultFont.fontName,
+                           @"image"     :  self.imgs   ?: @{},
+                           @"color"     :  self.colors ?: @{},
+                           @"text"      :  self.texts  ?: @{},
+                           @"font"      :  self.fonts  ?: @{},
+                           @"other"     :  self.other  ?: @{},
+                           };
+    BOOL flag = NO;
+    switch (type) {
+        case QXThemeFileTypePlist:
+            path = [path stringByAppendingPathComponent:[name stringByAppendingString:@".plist"]];
+            flag = [self exportPlistFileWithData:data path:path error:error];
+            break;
+        default:
+            path = [path stringByAppendingPathComponent:[name stringByAppendingString:@".json"]];
+            flag = [self exportJsonFileWithData:data path:path error:error];
+            break;
+    }
+    return flag;
+    
+}
 
 
+/**
+ 导出Json文件
+ 
+ @param data 文件数据
+ @param path 文件路径
+ @return YES:导出成功
+ */
+- (BOOL)exportPlistFileWithData:(NSDictionary *)data path:(NSString *)path error:(NSError **)error{
+    BOOL flag = [data writeToFile:path atomically:YES];
+    if (!flag) {
+        *error = [self createErrorWithDes:@"导出plist文件失败" code:-1002];
+    }
+    return flag;
+}
 
+
+/**
+ 导出Json文件
+
+ @param data 文件数据
+ @param path 文件路径
+ @return YES:导出成功
+ */
+- (BOOL)exportJsonFileWithData:(NSDictionary *)data path:(NSString *)path error:(NSError **)error{
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:error];
+    if (!jsonData) {
+        return NO;
+    }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL flag = [fileManager createFileAtPath:path contents:jsonData attributes:nil];
+    if (!flag) {
+        *error = [self createErrorWithDes:@"导出Json文件失败" code:-1003];
+    }
+    return flag;
+}
+- (NSError *)createErrorWithDes:(NSString *)des code:(NSInteger)code{
+    return [NSError errorWithDomain:@"www.lanyi.com" code:code userInfo:@{NSLocalizedDescriptionKey:des}];
+    
+}
 #pragma mark=========== 属性匹配 ===============
 - (UIColor *)getColorWithTag:(NSString *)tag{
     NSString *rgbStr = self.colors[tag];
@@ -278,8 +403,6 @@
     NSString *text = self.texts[tag];
     return text?:@"";
 }
-
-
 
 - (id)getOtherWithTag:(NSString *)tag{
     id other = self.other[tag];

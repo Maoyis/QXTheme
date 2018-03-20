@@ -13,7 +13,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [QXThemeManager initDefaultThemeWithFileName:@"Theme_Day.plist"];
+        [QXThemeManager initDefaultThemeWithFileName:@"Theme_Day.plist" isPriorityDefault:YES];
         [QXThemeManager refreshTheme];
     });
     

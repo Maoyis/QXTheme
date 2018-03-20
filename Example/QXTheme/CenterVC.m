@@ -46,7 +46,6 @@
     [self.imgR qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setImage:), @[IMAGE_ATTR(@"imgR")]);
     }];
-    
 }
 
 
