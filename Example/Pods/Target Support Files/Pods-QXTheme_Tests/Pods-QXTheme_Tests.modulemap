@@ -1,0 +1,6 @@
+framework module Pods_QXTheme_Tests {
+  umbrella header "Pods-QXTheme_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

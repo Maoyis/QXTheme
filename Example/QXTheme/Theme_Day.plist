@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fontName</key>
+	<string>Helvetica Neue</string>
+	<key>image</key>
+	<dict>
+		<key>tabbar1</key>
+		<string>Bar_1</string>
+		<key>tabbar_s1</key>
+		<string>Bar_1</string>
+		<key>tabbar2</key>
+		<string>home1</string>
+		<key>tabbar_s2</key>
+		<string>home2</string>
+		<key>tabbar3</key>
+		<string>Bar_3</string>
+		<key>tabbar_s3</key>
+		<string>Bar_3</string>
+		<key>imgL</key>
+		<string>索大</string>
+		<key>imgR</key>
+		<string>山治</string>
+	</dict>
+	<key>font</key>
+	<dict>
+		<key>labelFont</key>
+		<dict>
+			<key>size</key>
+			<integer>9</integer>
+			<key>name</key>
+			<string>zapfino</string>
+		</dict>
+		<key>navTitle</key>
+		<dict>
+			<key>size</key>
+			<string>20</string>
+		</dict>
+	</dict>
+	<key>color</key>
+	<dict>
+		<key>red1</key>
+		<string>f00000</string>
+		<key>themeColor</key>
+		<string>#f0f0f0</string>
+		<key>tabbar_tintColor</key>
+		<string>#9f9f9f</string>
+		<key>tabbar_selectColor</key>
+		<string>#111111</string>
+		<key>textColor1</key>
+		<string>#232323</string>
+	</dict>
+	<key>text</key>
+	<dict>
+		<key>tabbar1</key>
+		<string>收藏</string>
+		<key>tabbar2</key>
+		<string>主页</string>
+		<key>tabbar3</key>
+		<string>标签</string>
+		<key>labelText</key>
+		<string>Day Theme</string>
+	</dict>
+	<key>other</key>
+	<dict>
+		<key>nav_translucent</key>
+		<false/>
+	</dict>
+</dict>
+</plist>

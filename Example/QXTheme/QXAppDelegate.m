@@ -12,7 +12,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [QXThemeManager initDefaultThemeWithFileName:@"Theme_Day.plist"];
+        [QXThemeManager refreshTheme];
+    });
+    
     return YES;
 }
 

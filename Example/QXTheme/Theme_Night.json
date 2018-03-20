@@ -1,0 +1,39 @@
+{
+    "color"  :   {
+        "red1"               : "#ff0b0c",
+        "tabbar_selectColor" : "#efefef",
+        "tabbar_tintColor"   : "#9f9f9f",
+        "textColor1"         : "#cecece",
+        "themeColor"         : "#0f0f0f",
+    },
+    "font" : {
+        "labelFont" :  {
+            "name"  : "Helvetica-Bold",
+            "size"  : 17,
+        },
+        "navTitle"  :  {
+            "size"  : 20,
+        }
+    },
+    "fontName" : "Helvetica",
+    "image" :    {
+        "imgL"      : "萨博",
+        "imgR"      : "艾斯",
+        "tabbar1"   : "Bar_1",
+        "tabbar2"   : "Bar_2",
+        "tabbar3"   : "Bar_3",
+        "tabbar_s1" : "Bar_1",
+        "tabbar_s2" : "Bar_2",
+        "tabbar_s3" : "Bar_3",
+    },
+    "other" :    {
+        "nav_translucent" : 1,
+    },
+    "text" :    {
+        "labelText" : "Night Theme",
+        "tabbar1"   : "收藏",
+        "tabbar2"   : "设置",
+        "tabbar3"   : "标签",
+    }
+}
+

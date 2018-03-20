@@ -8,17 +8,24 @@
 
 #import "QXViewController.h"
 
+
 @interface QXViewController ()
 
 @end
+
+
 
 @implementation QXViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    [self.view qx_OrderPacks:^(QXThemeStaff *staff) {
+        staff.packing(@selector(setBackgroundColor:), @[COLOR_ATTR(@"themeColor")]);
+    }];
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
