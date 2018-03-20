@@ -125,6 +125,9 @@
 
 #pragma mark===========  初始化 ===============
 - (instancetype)initWithFilePath:(NSString *)path{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        return self;
+    }
     NSArray *temp = [path componentsSeparatedByString:@"/"];
     NSString *filename = temp.lastObject;
     return [self initWithFileName:filename];
