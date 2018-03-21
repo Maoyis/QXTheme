@@ -82,14 +82,12 @@
  @param isPriorityDefault 是否优先以上一次主题初始默认主题
  */
 + (void)initDefaultThemeWithFileName:(NSString *)fileName isPriorityDefault:(BOOL)isPriorityDefault{
-    QXTheme *theme;
+    QXTheme *theme = [[QXTheme alloc] initWithFileName:fileName];;
     if (isPriorityDefault) {
         NSString *defaultPath = [DEFAULT_THEME_PATH stringByAppendingPathComponent:@"defaultTheme.json"];
         QXTheme *defaultTheme = [[QXTheme alloc] initWithFilePath:defaultPath];
         if (defaultTheme && defaultTheme.name) {
             theme = defaultTheme;
-        }else{
-            theme = [[QXTheme alloc] initWithFileName:fileName];
         }
     }
     [self initDefaultTheme:theme];
