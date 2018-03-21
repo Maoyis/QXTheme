@@ -42,7 +42,7 @@
     _curTheme = curTheme;
     NSError *error;
     if (![curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"defaultTheme" error:&error]) {
-        NSLog(@"本地记录失败/n%@", error.localizedDescription);
+        QXTheme_Log(@"本地记录失败/n%@", error.localizedDescription);
     }
 }
 
@@ -141,6 +141,9 @@
     for (QXThemeStaff *staff in [m map].objectEnumerator.allObjects) {
         [m.courier qx_deliverByStaff:staff];
     }
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //上面方法已被官方弃用
+    [[UIApplication sharedApplication].keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark===========  业务处理 ===============
@@ -173,31 +176,31 @@
  */
 + (UIColor *)getColorWithTag:(NSString *)tag{
     QXTheme *theme = [[self shareManager] curTheme];
-    return [theme getColorWithTag:tag]?:[UIColor clearColor];
+    return [theme getColorWithTag:tag];
 }
 /**
  获取对应图片
  */
 + (UIImage *)getImgWithTag:(NSString *)tag{
     QXTheme *theme = [[self shareManager] curTheme];
-    return [theme getImgWithTag:tag]?:[UIImage new];
+    return [theme getImgWithTag:tag];
 }
 /**
  获取对应字体
  */
 + (UIFont *)getFontWithTag:(NSString *)tag{
     QXTheme *theme = [[self shareManager] curTheme];
-    return [theme getFontWithTag:tag]?:[UIFont new];
+    return [theme getFontWithTag:tag];
 }
 
 + (NSString *)getTextWithTag:(NSString *)tag{
     QXTheme *theme = [[self shareManager] curTheme];
-    return [theme getTextWithTag:tag]?:@"";
+    return [theme getTextWithTag:tag];
 }
 
 + (id)getOtherWithTag:(NSString *)tag{
     QXTheme *theme = [[self shareManager] curTheme];
-    return [theme getOtherWithTag:tag]?:[NSNull new];
+    return [theme getOtherWithTag:tag];
 }
 @end
 

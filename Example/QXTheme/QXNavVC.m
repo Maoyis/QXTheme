@@ -48,6 +48,17 @@
     [super pushViewController:viewController animated:animated];
 }
 
+
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    
+    return [QX_OTHER(@"BarStyle") integerValue];
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    
+    return UIStatusBarAnimationFade;
+}
 /*
 #pragma mark - Navigation
 
@@ -57,5 +68,6 @@
     // Pass the selected object to the new view controller.
 }
 */
+
 
 @end

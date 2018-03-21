@@ -16,7 +16,14 @@
  */
 - (void)qx_deliverByStaff:(QXThemeStaff *)staff{
     for (QXThemePack *pack in staff.packs) {
-        [self performSel:pack.sel args:pack.args target:staff.customer];
+        @try {
+            [self performSel:pack.sel args:pack.args target:staff.customer];
+        } @catch (NSException *exception) {
+            QXTheme_Log(@"\n--------\n ui:%@ \n pack:%@ \n------崩溃原因----\n%@\n--------\n", staff.customer, pack.description, exception);
+        } @finally {
+            continue;
+        }
+        
     }
 }
 
@@ -30,14 +37,16 @@
     //判断该方法参数个数是否对应（要求nil必须传空）
     NSInteger count = [selName length] - [[selName stringByReplacingOccurrencesOfString:@":" withString:@""] length];
     BOOL flag = args.count==count;
-    NSAssert(flag, @"参数数量不匹配，要求数量：%ld,实际数量：%ld", count, args.count);
+    NSAssert(flag, @"[%@]参数数量不匹配，要求数量：%ld,实际数量：%ld", selName, count, args.count);
+    
+    
 }
 /**
  主题变更实际执行方法
  */
 - (id)performSel:(SEL)sel  args:(NSArray *)args target:(id)target{
-    [self verifySel:sel args:args target:target];
     if (sel == nil) return nil;
+    [self verifySel:sel args:args target:target];
     NSMethodSignature *signature = [[target class] instanceMethodSignatureForSelector:sel];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     invocation.target = target;
@@ -202,7 +211,14 @@
     for (id key in arg) {
         id value = arg[key];
         id newValue = [self handleSpecialArg:value];
-        [data setObject:newValue forKey:key];
+        @try {
+            [data setObject:newValue forKey:key];
+        } @catch (NSException *exception) {
+            QXTheme_Log(@"原参数字典为：arg：%@\n--------exception------\nname:%@, reason:%@", arg, exception.name, exception.reason);
+        } @finally {
+            continue;
+        }
+        
     }
     return data;
 }
@@ -210,11 +226,17 @@
 /**
  参数为数组
  */
-- (id)handleArrArg:(NSDictionary *)arg{
+- (id)handleArrArg:(NSArray *)arg{
     NSMutableArray*data = [NSMutableArray new];
     for (id value in arg) {
         id newValue = [self handleSpecialArg:value];
-        [data addObject:newValue];
+        @try {
+            [data addObject:newValue];
+        } @catch (NSException *exception) {
+            QXTheme_Log(@"原参数数组为：arg：%@\n--------exception------\nname:%@, reason:%@", arg, exception.name, exception.reason);
+        } @finally {
+            continue;
+        }
     }
     return data;
 }

@@ -12,6 +12,14 @@
 
 #define DEFAULT_THEME_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"ThemeFile"]
 
+#ifdef DEBUG
+#define QXTheme_Log(...) NSLog(__VA_ARGS__);
+#else
+#define QXTheme_Log(...)
+#endif
+#define FLOG DGLog(@"%s", __FUNCTION__)
+
+
 
 @interface UIColor (QXColorString)
 /**

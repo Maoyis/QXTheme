@@ -41,7 +41,7 @@
     }];
     
     [self.imgL qx_OrderPacks:^(QXThemeStaff *staff) {
-        staff.packing(@selector(setImage:), @[IMAGE_ATTR(@"imgL")]);
+        staff.packing(@selector(setImage:), @[]);
     }];
     [self.imgR qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setImage:), @[IMAGE_ATTR(@"imgR")]);
@@ -53,6 +53,7 @@
 - (IBAction)gotoTest:(id)sender {
     TestVC *vc = [[TestVC alloc] initWithNibName:@"TestVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 

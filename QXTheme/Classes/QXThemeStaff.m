@@ -25,6 +25,15 @@
         return self;
     };
 }
+
+
+
+- (NSString *)description{
+    
+    return [NSString stringWithFormat:@"[sel:%@, args:%@]", NSStringFromSelector(self.sel), self.args];
+}
+
+
 @end
 
 @implementation QXThemeAttr

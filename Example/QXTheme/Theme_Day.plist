@@ -66,6 +66,8 @@
 	<dict>
 		<key>nav_translucent</key>
 		<false/>
+		<key>BarStyle</key>
+		<integer>0</integer>
 	</dict>
 </dict>
 </plist>

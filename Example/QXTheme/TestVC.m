@@ -48,6 +48,7 @@ static NSString *identy = @"QXTheme";
         name = @"Theme_Day.plist";
     }
     [QXThemeManager changeThemeWithFileName:name];
+    //[self setNeedsStatusBarAppearanceUpdate];
 }
 
 

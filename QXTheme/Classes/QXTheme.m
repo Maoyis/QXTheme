@@ -389,12 +389,12 @@
 #pragma mark=========== 属性匹配 ===============
 - (UIColor *)getColorWithTag:(NSString *)tag{
     NSString *rgbStr = self.colors[tag];
-    return [UIColor qx_colorWithHexString:rgbStr]?:[UIColor clearColor];
+    return [UIColor qx_colorWithHexString:rgbStr];
 }
 
 - (UIImage *)getImgWithTag:(NSString *)tag{
     NSString *name = self.imgs[tag];
-    return [UIImage imageNamed:name]?:[UIImage new];
+    return [UIImage imageNamed:name];
 }
 
 - (UIFont *)getFontWithTag:(NSString *)tag{
@@ -407,11 +407,11 @@
 
 - (NSString *)getTextWithTag:(NSString *)tag{
     NSString *text = self.texts[tag];
-    return text?:@"";
+    return text;
 }
 
 - (id)getOtherWithTag:(NSString *)tag{
     id other = self.other[tag];
-    return other?:[NSNull new];
+    return other;
 }
 @end
