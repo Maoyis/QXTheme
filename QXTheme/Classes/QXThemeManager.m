@@ -11,6 +11,9 @@
 
 
 
+#define QXSAVE_THEME_NAME(name) [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"QXDefaultThemeName"]
+#define QXREAD_THEME_NAME [[NSUserDefaults standardUserDefaults] objectForKey:@"QXDefaultThemeName"]
+
 @interface QXThemeManager ()
 
 
@@ -43,6 +46,8 @@
     NSError *error;
     if (![curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"defaultTheme" error:&error]) {
         QXTheme_Log(@"本地记录失败/n%@", error.localizedDescription);
+    }else{
+        QXSAVE_THEME_NAME(curTheme.name);
     }
 }
 
@@ -88,6 +93,7 @@
         QXTheme *defaultTheme = [[QXTheme alloc] initWithFilePath:defaultPath];
         if (defaultTheme && defaultTheme.name) {
             theme = defaultTheme;
+            theme.name = QXREAD_THEME_NAME;
         }
     }
     [self initDefaultTheme:theme];
