@@ -23,6 +23,8 @@
     [self.view qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setBackgroundColor:), @[COLOR_ATTR(@"themeColor")]);
     }];
+    self.navigationItem.backBarButtonItem
+    = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:self action:nil];
 }
 
 
@@ -31,6 +33,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }
 
 @end

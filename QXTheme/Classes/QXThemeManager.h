@@ -35,7 +35,10 @@
 /** 当前主题  */
 @property (nonatomic, strong) QXTheme *curTheme;
 
-
+/** 全局键盘样式 */
+@property (nonatomic, assign) UIKeyboardAppearance keyboardAppearance;
+/** 修改键盘样式权限，默认YES-能修改*/
+@property (nonatomic, assign) BOOL authKeyboardAppearance;
 
 /**
  获取全局主题管理

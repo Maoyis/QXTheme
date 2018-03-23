@@ -29,6 +29,7 @@ static NSString *identy = @"QXTheme";
 }
 
 - (void)setNav{
+
     UIButton *rBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [rBtn qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setTitleColor:forState:),
@@ -36,21 +37,58 @@ static NSString *identy = @"QXTheme";
                         @(UIControlStateNormal)]);
     }];
     [rBtn setFrame:CGRectMake(0, 0, 60, 30)];
-    [rBtn setTitle:@"切换主题" forState:UIControlStateNormal];
-    [rBtn addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];
+    [rBtn setTitle:@"Day" forState:UIControlStateNormal];
+    [rBtn setTitle:@"Night" forState:UIControlStateSelected];
+    [rBtn addTarget:self action:@selector(changeTheme:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rBtn];
     self.navigationItem.rightBarButtonItem = item;
+    
+    rBtn.selected = [[QXThemeManager shareManager].curTheme.name isEqualToString:@"Theme_Night"];
 }
 
-- (void)changeTheme{
+- (void)changeTheme:(UIButton *)sender{
+    sender.selected = !sender.selected;
     NSString *name = @"Theme_Night.json";
-    if ([[QXThemeManager shareManager].curTheme.name isEqualToString:@"Theme_Night"]) {
+    UIKeyboardAppearance appearance = UIKeyboardAppearanceDark;
+    if (!sender.selected) {
         name = @"Theme_Day.plist";
+        appearance = UIKeyboardAppearanceLight;
     }
-    [QXThemeManager changeThemeWithFileName:name];
-    //[self setNeedsStatusBarAppearanceUpdate];
+    UIWindow  *win = [UIApplication sharedApplication].keyWindow;
+    UIView *bar = [self getbarSnapshotFromView];
+    [win addSubview:bar];
+    bar.frame = CGRectMake(0, 0, win.frame.size.width, 64);
+    [[QXThemeManager shareManager] setKeyboardAppearance:appearance];
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [QXThemeManager changeThemeWithFileName:name];
+        bar.alpha = 0.1;
+    } completion:^(BOOL finished) {
+        [bar removeFromSuperview];
+    }];
+    
+    
 }
 
+- (UIView *)getbarSnapshotFromView{
+    
+    UIView *inputView = [UIApplication sharedApplication].keyWindow;
+    // Make an image from the input view.
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(inputView.frame.size.width, 64), NO, 0);
+    [inputView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // Create an image view.
+    UIView *snapshot = [[UIImageView alloc] initWithImage:image];
+    snapshot.center = inputView.center;
+//    snapshot.layer.masksToBounds = NO;
+//    snapshot.layer.cornerRadius = 0.0;
+//    snapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0);
+//    snapshot.layer.shadowRadius = 5.0;
+//    snapshot.layer.shadowOpacity = 0.4;
+    
+    return snapshot;
+}
 
 - (void)initLayout{
     CGFloat winWidth = [[UIScreen mainScreen] bounds].size.width;
@@ -85,7 +123,9 @@ static NSString *identy = @"QXTheme";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identy forIndexPath:indexPath];
     cell.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.f green:arc4random()%255/255.f blue:arc4random()%255/255.f alpha:1];
-    cell.layer.borderColor = [UIColor whiteColor].CGColor;
+    [cell.layer qx_OrderPacks:^(QXThemeStaff *staff) {
+        staff.packing(@selector(setBorderColor:), @[COLOR_ATTR(@"textColor1")]);
+    }];
     cell.layer.borderWidth = 1.f;
     cell.layer.cornerRadius = 5;
     

@@ -23,12 +23,37 @@
 
 /**快递员*/
 @property (nonatomic, strong) QXThemeCourier *courier;
+
+
+
+
+
 @end
 
 
 @implementation QXThemeManager
 
 
+
++ (QXThemeManager *)shareManager{
+    static id manager = nil;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        manager = [[self alloc] init];
+        [manager setCourier:[QXThemeCourier new]];
+        [manager initDefaultConfig];
+    });
+    return manager;
+}
+/**
+ 初始默认配置
+ */
+- (void)initDefaultConfig{
+    self.authKeyboardAppearance = YES;
+}
+
+
+#pragma mark=========== getter===============
 /**
  懒加载业务概况表
  */
@@ -40,9 +65,12 @@
     }
     return _map;
 }
-
+#pragma mark=========== setter ===============
 - (void)setCurTheme:(QXTheme *)curTheme{
     _curTheme = curTheme;
+    //按客户需求及时更新业务
+    [[self class] refreshTheme];
+    
     NSError *error;
     if (![curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"defaultTheme" error:&error]) {
         QXTheme_Log(@"本地记录失败/n%@", error.localizedDescription);
@@ -51,17 +79,63 @@
     }
 }
 
+- (void)setAuthKeyboardAppearance:(BOOL)authKeyboardAppearance{
+    _authKeyboardAppearance = authKeyboardAppearance;
+    if (authKeyboardAppearance) {
+        [self registerKeyBoardNotification];
+    }else{
+        [self cnacelKeyBoardNotification];
+    }
+}
+
+
+/**
+ 注册相关通知
+ */
+- (void)registerKeyBoardNotification{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    //UITextField
+    [center addObserver:self selector:@selector(inputViewBeginEdit:) name:UITextFieldTextDidBeginEditingNotification object:nil];
+    [center addObserver:self selector:@selector(inputViewEndEdit:) name:UITextFieldTextDidEndEditingNotification object:nil];
+    //UITextView
+    [center addObserver:self selector:@selector(inputViewBeginEdit:) name:UITextViewTextDidBeginEditingNotification object:nil];
+    [center addObserver:self selector:@selector(inputViewEndEdit:) name:UITextViewTextDidEndEditingNotification object:nil];
+}
+
+/**
+ 注册相关通知
+ */
+- (void)cnacelKeyBoardNotification{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    //UITextField
+    [center removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
+    [center removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
+    //UITextView
+    [center removeObserver:self name:UITextViewTextDidBeginEditingNotification object:nil];
+    [center removeObserver:self name:UITextViewTextDidEndEditingNotification object:nil];
+}
+
+- (void)inputViewBeginEdit:(NSNotification *)notify{
+    id inputView = [notify object];
+    if (self.authKeyboardAppearance) {
+        @try {
+            [inputView setKeyboardAppearance:self.keyboardAppearance];
+            [inputView reloadInputViews];
+        } @catch (NSException *exception) {
+            QXTheme_Log(@"exception:%@", exception.reason);
+        } @finally {
+            
+        }
+        
+    }
+}
+
+- (void)inputViewEndEdit:(NSNotification *)notify{
+    
+}
 #pragma mark===========   API  ===============
 
-+ (QXThemeManager *)shareManager{
-    static id manager = nil;
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        manager = [[self alloc] init];
-        [manager setCourier:[QXThemeCourier new]];
-    });
-    return manager;
-}
+
 + (NSMapTable *)map{
     return [[self shareManager] map];
 }
@@ -113,8 +187,6 @@
     QXThemeManager *m = [self shareManager];
     //更换当前主题
     [m setCurTheme:theme];
-    //按客户需求及时更新业务
-    [self refreshTheme];
     
 }
 

@@ -41,7 +41,7 @@
     }];
     
     [self.imgL qx_OrderPacks:^(QXThemeStaff *staff) {
-        staff.packing(@selector(setImage:), @[]);
+        staff.packing(@selector(setImage:), @[IMAGE_ATTR(@"imgL")]);
     }];
     [self.imgR qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setImage:), @[IMAGE_ATTR(@"imgR")]);

@@ -20,6 +20,7 @@
 }
 
 - (void)setNavBar{
+    
     [self.navigationBar qx_OrderPacks:^(QXThemeStaff *staff) {
        staff.
         packing(@selector(setTranslucent:), @[OTHER_ATTR(@"nav_translucent")]).
@@ -30,7 +31,6 @@
                       @[@{NSFontAttributeName:FONT_ATTR(@"navTitle"),
                           NSForegroundColorAttributeName:COLOR_ATTR(@"tabbar_selectColor")}]);
     }];
-
 }
 
 
