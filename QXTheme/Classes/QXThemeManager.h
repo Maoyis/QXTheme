@@ -99,6 +99,13 @@
 + (void)refreshTheme;
 
 
+/**
+ 通过主题（文件）名字比较当前主题是否为某个主题
+ 
+ @param name 主题名字
+ @return YES-相同主题
+ */
++ (BOOL)compareCurThemeWithName:(NSString *)name;
 
 
 #pragma mark=========== 业务处理 ===============

@@ -35,6 +35,11 @@
 
 
 
+
+
+
+
+
 + (QXThemeManager *)shareManager{
     static id manager = nil;
     static dispatch_once_t token;
@@ -223,6 +228,24 @@
     //上面方法已被官方弃用
     [[UIApplication sharedApplication].keyWindow.rootViewController setNeedsStatusBarAppearanceUpdate];
 }
+
+
+
+
+/**
+ 通过主题（文件）名字比较当前主题是否为某个主题
+
+ @param name 主题名字
+ @return YES-相同主题
+ */
++ (BOOL)compareCurThemeWithName:(NSString *)name{
+    QXThemeManager *m = [self shareManager];
+    if ([m.curTheme.name isEqualToString:name]) {
+        return YES;
+    }
+    return NO;
+}
+
 
 #pragma mark===========  业务处理 ===============
 - (void)qx_outboundByStaff:(QXThemeStaff *)staff{

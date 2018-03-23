@@ -82,6 +82,10 @@ pod 'QXTheme'
             if (![[QXThemeManager shareManager].curTheme exportThemeFileWithFileType:QXThemeFileTypeJson name:@"ThemeName" path:@"myDesktop/QXTheme" error:&error]) {
             NSLog(@"导出失败Error:%@", error.localizedDescription);
             }
+## Log
+
+*  1.0.7：
+    新增*compareCurThemeWithName:*接口用于比较当前主题
 
 ## Author
 

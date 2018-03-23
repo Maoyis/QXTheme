@@ -37,13 +37,13 @@ static NSString *identy = @"QXTheme";
                         @(UIControlStateNormal)]);
     }];
     [rBtn setFrame:CGRectMake(0, 0, 60, 30)];
-    [rBtn setTitle:@"Day" forState:UIControlStateNormal];
-    [rBtn setTitle:@"Night" forState:UIControlStateSelected];
+    [rBtn setTitle:@"Night" forState:UIControlStateNormal];
+    [rBtn setTitle:@"Day" forState:UIControlStateSelected];
     [rBtn addTarget:self action:@selector(changeTheme:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rBtn];
     self.navigationItem.rightBarButtonItem = item;
     
-    rBtn.selected = [[QXThemeManager shareManager].curTheme.name isEqualToString:@"Theme_Night"];
+    rBtn.selected = [QXThemeManager compareCurThemeWithName:@"Theme_Night"];
 }
 
 - (void)changeTheme:(UIButton *)sender{
