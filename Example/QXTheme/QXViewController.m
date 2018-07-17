@@ -23,6 +23,7 @@
     [self.view qx_OrderPacks:^(QXThemeStaff *staff) {
         staff.packing(@selector(setBackgroundColor:), @[COLOR_ATTR(@"themeColor")]);
     }];
+    [self.view qx_CancelOrderPacksWithSel:@selector(setBackgroundColor:)];
     self.navigationItem.backBarButtonItem
     = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:self action:nil];
 }
