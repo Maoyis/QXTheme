@@ -115,9 +115,11 @@
  */
 - (void)qx_outboundByStaff:(QXThemeStaff *)staff;
 
-
-
-
+/**
+ 取消订阅
+ */
+- (void)qx_cancelByStaff:(QXThemeStaff *)staff ;
+- (void)qx_cancelByCustomer:(id)customer sel:(SEL)sel;
 #pragma mark=========== 取属性值 ===============
 /**
  获取主题对应颜色

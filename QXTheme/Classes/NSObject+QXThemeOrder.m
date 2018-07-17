@@ -29,9 +29,21 @@
 
 
 
+- (void)qx_CancelOrderPacks:(QXOrderPacks)orderPacks {
+    QXThemeStaff *staff = [QXThemeStaff new];
+    //退订业务
+    orderPacks(staff);
+    staff.customer = self;
+    QXThemeManager *m = [QXThemeManager shareManager];
+    //根据职员提供信息出库
+    [m qx_cancelByStaff:staff];
+}
 
-
-
+- (void)qx_CancelOrderPacksWithSel:(SEL)sel{
+    QXThemeManager *m = [QXThemeManager shareManager];
+    //根据职员提供信息出库
+    [m qx_cancelByCustomer:self sel:sel];
+}
 
 @end
 

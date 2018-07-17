@@ -24,9 +24,18 @@ typedef void(^QXOrderPacks)(QXThemeStaff *staff);
 
 
 
-
-- (void)qx_OrderPacks:(QXOrderPacks)OrderPacks;
-
+/**
+ 订阅
+ */
+- (void)qx_OrderPacks:(QXOrderPacks)orderPacks;
+/**
+ 取消订阅
+ */
+- (void)qx_CancelOrderPacks:(QXOrderPacks)orderPacks;
+/**
+ 取消订阅
+ */
+- (void)qx_CancelOrderPacksWithSel:(SEL)sel;
 
 @end
 

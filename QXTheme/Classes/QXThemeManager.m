@@ -268,8 +268,55 @@
     }
 }
 
+- (void)qx_cancelByStaff:(QXThemeStaff *)staff {
+    if (!staff || !staff.customer) {//确认是已构建一对一服务的职员
+        return;
+    }
+    if ([self.map.keyEnumerator.allObjects containsObject:staff.customer]) {
+        //老客户
+        QXThemeStaff *oldStaff = [self.map objectForKey:staff.customer];
+        //业务交接
+        NSMutableArray *temp = [NSMutableArray new];
+        for (QXThemePack *pack in staff.packs) {
+            for (QXThemePack *oldPack in oldStaff.packs) {
+                if (pack.sel == oldPack.sel) {
+                    [temp addObject:oldPack];
+                }
+            }
+        }
+        [oldStaff.packs removeObjectsInArray:temp];
+        if (oldStaff.packs.count == 0) {
+            [self.map removeObjectForKey:staff.customer];
+        }
+    }else{
+        //不存在不处理
+    }
+    
+}
 
-
+- (void)qx_cancelByCustomer:(id)customer sel:(SEL)sel {
+    if (!customer) {
+        return;
+    }
+    if ([self.map.keyEnumerator.allObjects containsObject:customer]) {
+        //老客户
+        QXThemeStaff *oldStaff = [self.map objectForKey:customer];
+        //业务交接
+        NSMutableArray *temp = [NSMutableArray new];
+        for (QXThemePack *oldPack in oldStaff.packs) {
+            if (sel == oldPack.sel) {
+                [temp addObject:oldPack];
+            }
+        }
+        [oldStaff.packs removeObjectsInArray:temp];
+        if (oldStaff.packs.count == 0) {
+            [self.map removeObjectForKey:customer];
+        }
+    }else{
+        //不存在不处理
+    }
+    
+}
 
 #pragma mark=========== 取属性值 ===============
 /**
